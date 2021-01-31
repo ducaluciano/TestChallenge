@@ -1,0 +1,37 @@
+package Pages;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public abstract class AbstractPageObject {
+	protected WebDriver driver;
+	protected WebDriverWait wait;
+
+	public AbstractPageObject(WebDriver driver) {
+		this.driver = driver;
+		this.wait = new WebDriverWait(driver, 30);
+		isLoaded();
+	}
+
+	/**
+	 * Cada PageObject debe implementar este metodo para retornar el
+	 * identificador del elemento mas importante de la pagina. La presencia de
+	 * ese elemento se va a utilizar para dar el estado de pagina lista para
+	 * operar.
+	 * 
+	 * @return By El locator para el elemento principal de la pagina
+	 */
+	
+
+	/**
+	 * Verifica que la pagina este lista para ser utilizada basandose en que el
+	 * elemento principal de la misma se esta mostrando
+	 */
+	
+}

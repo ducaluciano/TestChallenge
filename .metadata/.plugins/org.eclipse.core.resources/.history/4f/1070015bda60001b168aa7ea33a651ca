@@ -1,0 +1,97 @@
+package Pages;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class LandingPage extends AbstractPageObject {
+	public LandingPage(WebDriver driver) {
+		
+		super(driver);
+	}
+
+	@Override
+	protected By getElementoPrincipal() {
+	
+		By elemento =  By.id("__next");
+		
+		return elemento;
+	}
+	
+	
+	By searchInput = By.className("InputBar__SearchInput-t6v2m1-1");
+	By searchButton = By.className("InputBar__SearchButton-t6v2m1-2");
+	By filtros =  By.name("aggregations");
+	
+	 //Click en buscar
+
+    public void clickBuscar(){
+    	
+            driver.findElement(searchButton).click();
+
+    }
+
+    //Set criterio de busqueda
+
+    public void setBusqueda(String textoBusqueda){
+    	
+        driver.findElement(searchInput).sendKeys(textoBusqueda);
+
+    }
+    
+    public void setFiltroTexto (String textoFiltro) 
+    {
+    	//wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText(textoFiltro)));
+    	driver.findElement(By.partialLinkText(textoFiltro)).click();
+    	
+    }
+    
+    public boolean contienenMarcaFiltrada()
+    {
+    	filtrarPorPrimeraMarca();
+    	List<WebElement> elementos = getListadoMostrado();
+    	    	
+    	for(int i=0; i< elementos.size(); i++){
+    	      System.out.println(elementos.get(i).getText());
+    	    }
+    	
+		return false;
+    }
+    
+    public String filtrarPorPrimeraMarca () 
+    {
+    	WebElement marcasList =	driver.findElement(By.name("brandsFilter"));
+    	String marca = marcasList.findElements(By.name("checkboxBrand")).get(0).getAttribute("value");
+    	System.out.println(marcasList.findElements(By.tagName("a")).getSize());
+    	marcasList.findElements(By.tagName("a")).get(0).click();
+    	
+    	System.out.println(driver.getCurrentUrl());
+    	System.out.println(marca);
+    	return marca;
+    }
+    
+    public void getBreadcrumb ()
+    {
+    	driver.findElement(By.name("breadcrumb"));
+    }
+    
+    public List<WebElement> getListadoMostrado ()
+    {
+    	return (driver.findElements(By.className("PieceTitle-sc-1eg7yvt-0")));
+    }
+    
+ 
+    // Buscar
+    public void buscar(String textoBusqueda){
+
+        //Llena el campo de busqueda
+        this.setBusqueda(textoBusqueda);
+
+        //Click buscar
+        this.clickBuscar();        
+    }
+   
+}

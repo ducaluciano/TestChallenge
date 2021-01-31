@@ -1,0 +1,58 @@
+package Pages;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class LandingPage extends AbstractPageObject {
+	public LandingPage(WebDriver driver) {
+		
+		super(driver);
+	}
+
+	@Override
+	protected By getElementoPrincipal() {
+		
+		By filtros =  By.name("aggregations");
+		
+		return filtros;
+	}
+	
+	By searchBar =  By.id("__next");
+	By searchInput = By.className("InputBar__SearchInput-t6v2m1-1");
+	By searchButton = By.className("InputBar__SearchButton-t6v2m1-2");
+	
+	 //Click en buscar
+
+    public void clickBuscar(){
+    	System.out.println("searchBar=" + searchBar); 
+            driver.findElement(searchButton).click();
+
+    }
+
+    //Set criterio de busqueda
+
+    public void setBusqueda(String textoBusqueda){
+    	System.out.println("searchBar=" + searchBar); 
+        driver.findElement(searchInput).sendKeys(textoBusqueda);
+
+    }
+    
+    public Boolean isSearchBarMostrada() {
+		WebElement search = (WebElement) driver.findElements(searchBar);
+		
+		return search.isDisplayed();
+	}
+    
+    // Buscar
+    public void buscar(String textoBusqueda){
+
+        //Llena el campo de busqueda
+        this.setBusqueda(textoBusqueda);
+
+        //Click buscar
+        this.clickBuscar();        
+    }
+   
+}

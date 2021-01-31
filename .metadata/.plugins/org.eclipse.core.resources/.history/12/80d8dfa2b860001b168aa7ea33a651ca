@@ -1,0 +1,23 @@
+package Tests;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import Pages.LandingPage;
+
+public class TestChallenge extends BaseTest {
+
+	public TestChallenge() {
+		super();
+	}
+
+	@Test
+	public void buscar() {
+		LandingPage landingPage = new LandingPage(driver);
+		assertTrue("la barra no se muestra",
+				landingPage.isSearchBarMostrada());
+		landingPage.buscar("Heladera");
+	}
+
+	
+}

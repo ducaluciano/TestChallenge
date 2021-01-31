@@ -1,0 +1,23 @@
+package Tests;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import Pages.LandingPage;
+
+public class TestChallenge extends BaseTest {
+
+	public TestChallenge() {
+		super();
+	}
+
+	@Test
+	public void test1() {
+		System.out.println("driver=" + driver); 
+		LandingPage landingPage = new LandingPage(driver);
+		
+		System.out.println("driver=" + driver); 
+	}
+
+	
+}
