@@ -4,6 +4,7 @@ org.eclipse.jdt.core.classpathVariable.JRE_SRC=D\:/eclipse/plugins/org.eclipse.j
 org.eclipse.jdt.core.classpathVariable.JRE_SRCROOT=
 org.eclipse.jdt.core.classpathVariable.JUNIT_HOME=D\:/eclipse/plugins/org.junit_4.13.0.v20200204-1500.jar
 org.eclipse.jdt.core.classpathVariable.M2_REPO=C\:/Users/AiNt/.m2/repository
+org.eclipse.jdt.core.classpathVariable.TESTNG_HOME=D\:/eclipse/configuration/org.eclipse.osgi/443/0/.cp
 org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=15

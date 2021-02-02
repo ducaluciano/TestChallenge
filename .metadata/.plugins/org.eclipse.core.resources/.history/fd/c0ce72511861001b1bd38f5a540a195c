@@ -1,3 +1,0 @@
-module BackendTest {
-	requires org.testng;
-}

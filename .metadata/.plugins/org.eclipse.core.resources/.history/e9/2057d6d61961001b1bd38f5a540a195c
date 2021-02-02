@@ -1,5 +1,0 @@
-module BackendTest {
-	requires org.testng;
-	requires okio;
-	requires junit;
-}
