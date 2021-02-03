@@ -2,6 +2,10 @@ package Tests;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,65 +24,87 @@ import org.junit.Test;
 
 public class TestBack {
 
-   final static String url="http://demo.guru99.com/V4/sinkministatement.php?CUSTOMER_ID=68195&PASSWORD=1234!&Account_No=1";
+	private static final String textoBusqueda = "lagunitas";
+	private static final String nameFiltro = "Lagunitas Brewing Co";
+	private static final int id = 761;
+	private static final String street = "1280 N McDowell Blvd";
+    private static final String phone = "7077694495";
+    private static final String state = "California";
+    private static final String baseUrl = "https://api.openbrewerydb.org/breweries/";
 
-   public static void main(String args[]) {
-	   
-	   GetLagunitas();
-	   //getSize();
-    
-    
+   public  void main(String args[]) {
+	    
 
 ; }
 
    @Test
-   public static void GetLagunitas()
-   {   
-   // Specify the base URL to the RESTful web service
-   RestAssured.baseURI = "https://api.openbrewerydb.org/breweries/";
-   
-   // Get the RequestSpecification of the request that you want to sent
-   // to the server. The server is specified by the BaseURI that we have
-   // specified in the above step.
-   RequestSpecification httpRequest = RestAssured.given().contentType("application/json").queryParam("query","lagunitas");
-  
-   
-   // Make a request to the server by specifying the method Type and the method URL.
-   // This will return the Response from the server. Store the response in a variable.
-   Response response = httpRequest.request(Method.GET, "/autocomplete");
-   List<String> jsonResponse = response.jsonPath().getList("$");
-   List<String> listaIds= new ArrayList();
-   
-   for(int i=0; i< jsonResponse.size(); i++)
+   public void test () 
    {
-	   System.out.println(i+ response.jsonPath().getList("name").get(i).toString()+ response.jsonPath().getList("id").get(i).toString());
+	   Buscar(textoBusqueda);	   
+   }
+   
+   public void Buscar(String textoBusqueda)
+   {   
+      RestAssured.baseURI = baseUrl;
+      RequestSpecification httpRequest = RestAssured.given().contentType("application/json").queryParam("query",textoBusqueda);
+      Response response = httpRequest.request(Method.GET, "/autocomplete");
+      
+      //guardo la respuesta
+      List<String> jsonResponse = response.jsonPath().getList("$");
+      assertNotNull("No se obtuvo respuesta",jsonResponse);
+      
+      //creo una lista para guardar los ids que compluan con la condicion
+      List<String> listaIds = getIds(response, jsonResponse);
+      //busca los objetos para esos ids y asserta
+      checkByIds(listaIds);
+      System.out.println("Pass!");
+   }
+
+
+   private static void checkByIds( List<String> listaIds) {
 	   
-	   if (response.jsonPath().getList("name").get(i).toString().equals("Lagunitas Brewing Co") )
+	//RequestSpecification httpRequest2 = RestAssured.given().contentType("application/json");
+	  Boolean hayResultado = false;
+      for(int i=0; i< listaIds.size(); i++)
+      {
+    	  RestAssured.baseURI = baseUrl;
+          RequestSpecification httpRequest = RestAssured.given().contentType("application/json");
+          Response response = httpRequest.request(Method.GET, "/"+listaIds.get(i));
+         
+                  
+          if (response.jsonPath().getString("state").equals(state))
+    	  {     	
+        	  System.out.println("if");
+    		  response.then().assertThat()
+    		  .body("id", equalTo(id))
+    		  .body("name", equalTo(nameFiltro))    	
+    		  .body("street", equalTo(street))
+    		  .body("phone", equalTo(phone));
+    		  hayResultado = true;
+    	  } 
+         
+      }
+      assertTrue("No se obtuvieron resultados para el estado: "+state, hayResultado);
+
+   }
+
+   	private static List<String> getIds(Response response, List<String> jsonResponse) {
+   		
+   	List<String> listaIds= new ArrayList();
+   
+      for(int i=0; i< jsonResponse.size(); i++)
+      {
+    	  
+	   if (response.jsonPath().getList("name").get(i).toString().equals(nameFiltro) )
 	   {
 		   listaIds.add(response.jsonPath().getList("id").get(i).toString());
 	   }
-   }
-     
-   RequestSpecification httpRequest2 = RestAssured.given().contentType("application/json");
-   
-   for(int i=0; i< listaIds.size(); i++)
-   {
-   
-   Response response2 = httpRequest.request(Method.GET, "/"+listaIds.get(i));
-   
-   	if (response2.jsonPath().getString("state").equals("California"))
-   	{ 
-   	   response2.then().assertThat()
-      
-      .body("id", equalTo(761))
-      .body("name", equalTo("Lagunitas Brewing Co"))    	
-      .body("street", equalTo("1280 N McDowell Blvd"))
-      .body("phone", equalTo("7077694495"));
-   	}
-  
-   }
-   
-   }
+	   
+      }
+	
+      assertNotNull("No se obtuvieron resultados para los ids proporcionados en la respuesta",listaIds);
+      return listaIds;
+}
  
 
 
