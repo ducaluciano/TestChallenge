@@ -44,7 +44,7 @@ public class BaseTest {
 		} else if (BROWSER.equals("chrome")) {
 			String path = "lib/chromedriver";
 			if (System.getProperty("os.name").contains("Windows")) {
-				path = "/Users/AiNt/chromedriver.exe";
+				path = "../TestTry/chromedriver.exe";
 			}
 			System.setProperty("webdriver.chrome.driver", path);
 			driver = new ChromeDriver();

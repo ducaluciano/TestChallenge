@@ -74,8 +74,7 @@ public class TestBack {
                   
           if (response.jsonPath().getString("state").equals(state))
     	  {     	
-        	  System.out.println("if");
-    		  response.then().assertThat()
+        	 response.then().assertThat()
     		  .body("id", equalTo(id))
     		  .body("name", equalTo(nameFiltro))    	
     		  .body("street", equalTo(street))
